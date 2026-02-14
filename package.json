@@ -1,28 +1,28 @@
 {
-  "name": "hyperapp-starter",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "coverage": "vitest run --coverage"
-  },
-  "devDependencies": {
-    "@types/ramda": "^0.31.1",
-    "@vitest/coverage-v8": "^4.0.18",
-    "happy-dom": "^20.6.1",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
-  },
-  "dependencies": {
-    "hyperapp": "^2.0.22",
-    "navigo": "^8.11.1",
-    "ramda": "^0.32.0",
-    "zod": "^4.3.6"
-  }
+	"name": "hyperapp-starter",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"coverage": "vitest run --coverage"
+	},
+	"devDependencies": {
+		"@types/ramda": "^0.31.1",
+		"@vitest/coverage-v8": "^4.0.18",
+		"happy-dom": "^20.6.1",
+		"typescript": "^5.9.3",
+		"vite": "^7.3.1",
+		"vitest": "^4.0.18"
+	},
+	"dependencies": {
+		"hyperapp": "^2.0.22",
+		"navigo": "^8.11.1",
+		"ramda": "^0.32.0",
+		"zod": "^4.3.6"
+	}
 }

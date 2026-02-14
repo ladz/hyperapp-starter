@@ -6,31 +6,31 @@ import { parseOrThrow } from "../../core/schemas.js";
 import { type User, UserListSchema } from "./schemas.js";
 
 export const fetchUsers = (): Promise<User[]> =>
-  fetch("https://jsonplaceholder.typicode.com/users")
-    .then((r) => r.json())
-    .then((data) => parseOrThrow(UserListSchema, data, "fetchUsers"));
+	fetch("https://jsonplaceholder.typicode.com/users")
+		.then((r) => r.json())
+		.then((data) => parseOrThrow(UserListSchema, data, "fetchUsers"));
 
 export const LoadUsers = (
-  state: AppState,
+	state: AppState,
 ): [AppState, ReturnType<typeof FetchRoute>] => [
-  { ...state, loading: true },
-  FetchRoute([fetchUsers()], SetUsersData, SetError),
+	{ ...state, loading: true },
+	FetchRoute([fetchUsers()], SetUsersData, SetError),
 ];
 
 export const SetUsersData = (
-  state: AppState,
-  [users]: [User[]],
+	state: AppState,
+	[users]: [User[]],
 ): [AppState, ReturnType<typeof RestoreScroll>] => [
-  assocPath(["routes", "users", "list"], users, {
-    ...state,
-    loading: false,
-    currentRoute: "users",
-  }) as AppState,
-  RestoreScroll("users"),
+	assocPath(["routes", "users", "list"], users, {
+		...state,
+		loading: false,
+		currentRoute: "users",
+	}) as AppState,
+	RestoreScroll("users"),
 ];
 
 export const SetError = (state: AppState, error: Error): AppState => ({
-  ...state,
-  loading: false,
-  error: error.message ?? "Unbekannter Fehler",
+	...state,
+	loading: false,
+	error: error.message ?? "Unbekannter Fehler",
 });

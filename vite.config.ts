@@ -1,5 +1,5 @@
-import { defineConfig } from "vite"
-import { resolve } from "path"
+import { resolve } from "node:path";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
@@ -9,14 +9,9 @@ export default defineConfig({
   },
   test: {
     environment: "happy-dom",
-    resolve: {
-      alias: {
-        "@": resolve(__dirname, "src"),
-      },
-    },
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],
     },
   },
-})
+});
