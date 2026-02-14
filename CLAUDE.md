@@ -1,16 +1,17 @@
 # Hyperapp Boilerplate
 
 Minimal, functional frontend boilerplate for backoffice applications.
+UI language is German.
 
 ## Stack
 
-- **Hyperapp** – 1kB vdom + state management, functional paradigm
+- **Hyperapp 2** – 1kB vdom + state management, functional paradigm
 - **Navigo** – vanilla JS router, lives outside Hyperapp
 - **Ramda** – functional data transformation, especially `assocPath` for immutable state updates
 - **Zod** – runtime validation at the API boundary
 - **TypeScript** – `strict: false`, `noImplicitAny: true` – pragmatic, no overhead
 - **Vite** – build tool and dev server
-- **Vitest** – tests, mirrors `src/` structure
+- **Vitest** – tests with `happy-dom` environment, mirrors `src/` structure
 
 ## Commands
 
@@ -32,9 +33,9 @@ src/
     schemas.ts     # parseOrThrow – generic Zod helper
   routes/
     home/
-      index.ts     # SetHome action + HomeView
+      index.ts     # HomeView (+ unused SetHome action)
     users/
-      actions.ts   # LoadUsers, SetUsersData, SetError
+      actions.ts   # LoadUsers, SetUsersData, SetError, fetchUsers
       schemas.ts   # UserSchema, UserListSchema + inferred types
       view.ts      # UsersView
   app.ts           # Root state (AppState), root view, SetRoute
@@ -42,8 +43,17 @@ src/
   style.css
 tests/             # mirrors src/ structure
   core/
+    schemas.test.ts
   routes/
+    users/
+      actions.test.ts
+      schemas.test.ts
 ```
+
+## Path Aliases
+
+`@/*` is aliased to `src/*` in both `tsconfig.json` and `vite.config.ts`.
+Tests use `@/` imports (e.g. `import { parseOrThrow } from "@/core/schemas.js"`).
 
 ## Architecture
 
@@ -52,6 +62,7 @@ The only contact point is `main.ts`: Navigo route handlers call `dispatch`.
 Navigation triggered from within Hyperapp runs as an effect (`Navigate`).
 
 **Data flow:**
+
 ```
 API → Zod (parseOrThrow) → guaranteed TypeScript type → Ramda transforms → Hyperapp renders
 ```
