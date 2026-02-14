@@ -1,21 +1,21 @@
-import { h, text, VNode } from "hyperapp"
-import { Navigate } from "./core/router.js"
-import { HomeView } from "./routes/home/index.js"
-import { UsersView } from "./routes/users/view.js"
-import { User } from "./routes/users/schemas.js"
+import { h, text, type VNode } from "hyperapp";
+import { Navigate } from "./core/router.js";
+import { HomeView } from "./routes/home/index.js";
+import type { User } from "./routes/users/schemas.js";
+import { UsersView } from "./routes/users/view.js";
 
 // --- Root State ---
 
 export interface AppState {
-  currentRoute: string | null
-  loading: boolean
-  error: string | null
+  currentRoute: string | null;
+  loading: boolean;
+  error: string | null;
   routes: {
-    home: Record<string, never>
+    home: Record<string, never>;
     users: {
-      list: User[]
-    }
-  }
+      list: User[];
+    };
+  };
 }
 
 export const init: AppState = {
@@ -26,14 +26,14 @@ export const init: AppState = {
     home: {},
     users: { list: [] },
   },
-}
+};
 
 export const SetRoute = (state: AppState, route: string): AppState => ({
   ...state,
   currentRoute: route,
   loading: false,
   error: null,
-})
+});
 
 // --- Root View ---
 
@@ -44,11 +44,11 @@ const Nav = (): VNode<AppState> =>
       {
         href: "/",
         onclick: (state: AppState, e: MouseEvent) => {
-          e.preventDefault()
-          return [state, Navigate("/")]
+          e.preventDefault();
+          return [state, Navigate("/")];
         },
       },
-      text("Home")
+      text("Home"),
     ),
     text(" | "),
     h(
@@ -56,16 +56,16 @@ const Nav = (): VNode<AppState> =>
       {
         href: "/users",
         onclick: (state: AppState, e: MouseEvent) => {
-          e.preventDefault()
-          return [state, Navigate("/users")]
+          e.preventDefault();
+          return [state, Navigate("/users")];
         },
       },
-      text("Users")
+      text("Users"),
     ),
-  ])
+  ]);
 
 const ErrorView = (message: string): VNode<AppState> =>
-  h("p", { style: { color: "red" } }, text(`Fehler: ${message}`))
+  h("p", { style: { color: "red" } }, text(`Fehler: ${message}`));
 
 export const view = (state: AppState): VNode<AppState> =>
   h("main", {}, [
@@ -76,4 +76,4 @@ export const view = (state: AppState): VNode<AppState> =>
     state.currentRoute === null
       ? h("p", {}, text("Route wird aufgelöst…"))
       : null,
-  ])
+  ]);
