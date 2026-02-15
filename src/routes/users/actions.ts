@@ -1,7 +1,6 @@
 import { assocPath } from "ramda";
 import type { AppState } from "../../app.js";
 import { FetchRoute } from "../../core/http.js";
-import { RestoreScroll } from "../../core/router.js";
 import { parseOrThrow } from "../../core/schemas.js";
 import { type User, UserListSchema } from "./schemas.js";
 
@@ -17,17 +16,12 @@ export const LoadUsers = (
 	FetchRoute([fetchUsers()], SetUsersData, SetError),
 ];
 
-export const SetUsersData = (
-	state: AppState,
-	[users]: [User[]],
-): [AppState, ReturnType<typeof RestoreScroll>] => [
+export const SetUsersData = (state: AppState, [users]: [User[]]): AppState =>
 	assocPath(["routes", "users", "list"], users, {
 		...state,
 		loading: false,
 		currentRoute: "users",
-	}) as AppState,
-	RestoreScroll("users"),
-];
+	}) as AppState;
 
 export const SetError = (state: AppState, error: Error): AppState => ({
 	...state,

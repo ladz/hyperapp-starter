@@ -1,6 +1,6 @@
 import { app } from "hyperapp";
 import { init, SetRoute, view } from "./app.js";
-import { router, saveScroll } from "./core/router.js";
+import { router } from "./core/router.js";
 import { LoadUsers } from "./routes/users/actions.js";
 import { LoadArticles } from "./routes/articles/actions.js";
 import { LoadProducts } from "./routes/products/actions.js";
@@ -9,13 +9,6 @@ const dispatch = app<typeof init>({
 	init,
 	view,
 	node: document.getElementById("app") as HTMLElement,
-});
-
-router.hooks({
-	before(done) {
-		saveScroll(window.location.pathname);
-		done();
-	},
 });
 
 router

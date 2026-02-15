@@ -20,6 +20,8 @@
 		"vitest": "^4.0.18"
 	},
 	"dependencies": {
+		"@hyperapp/dom": "^1.0.0",
+		"@hyperapp/html": "^2.0.0",
 		"hyperapp": "^2.0.22",
 		"navigo": "^8.11.1",
 		"ramda": "^0.32.0",
