@@ -1,59 +1,56 @@
-import { h, text, type VNode } from "hyperapp";
+import type { VNode } from "hyperapp";
+import { div, h1, h3, p, span, text } from "@hyperapp/html";
 import type { AppState } from "../../app.js";
 
 const ProductCard = (
-  name: string,
-  price: string,
-  description: string,
-  category: string,
+	name: string,
+	price: string,
+	description: string,
+	category: string,
 ): VNode<AppState> =>
-  h(
-    "div",
-    {
-      style: {
-        marginBottom: "1.5rem",
-        padding: "1rem",
-        background: "#f5f5f5",
-        borderRadius: "4px",
-      },
-    },
-    [
-      h(
-        "div",
-        {
-          style: {
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "start",
-            marginBottom: "0.5rem",
-          },
-        },
-        [
-          h("h3", { style: { margin: "0" } }, text(name)),
-          h(
-            "span",
-            {
-              style: {
-                fontWeight: "bold",
-                color: "#0066cc",
-                fontSize: "1.1em",
-              },
-            },
-            text(price),
-          ),
-        ],
-      ),
-      h(
-        "p",
-        { style: { color: "#888", fontSize: "0.85em", margin: "0.25rem 0" } },
-        text(category),
-      ),
-      h("p", { style: { margin: "0.5rem 0 0 0" } }, text(description)),
-    ],
-  );
+	div(
+		{
+			style: {
+				marginBottom: "1.5rem",
+				padding: "1rem",
+				background: "#f5f5f5",
+				borderRadius: "4px",
+			},
+		},
+		[
+			div(
+				{
+					style: {
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "start",
+						marginBottom: "0.5rem",
+					},
+				},
+				[
+					h3({ style: { margin: "0" } }, text(name)),
+					span(
+						{
+							style: {
+								fontWeight: "bold",
+								color: "#0066cc",
+								fontSize: "1.1em",
+							},
+						},
+						text(price),
+					),
+				],
+			),
+			p(
+				{ style: { color: "#888", fontSize: "0.85em", margin: "0.25rem 0" } },
+				text(category),
+			),
+			p({ style: { margin: "0.5rem 0 0 0" } }, text(description)),
+		],
+	);
 
 export const ProductsView = (): VNode<AppState> => {
-  const products = [
+	const products = [
     {
       name: "Premium Tastatur MX-500",
       price: "€129,99",
@@ -223,19 +220,15 @@ export const ProductsView = (): VNode<AppState> => {
     },
   ];
 
-  return h("div", {}, [
-    h("h1", {}, text("Produkte")),
-    h(
-      "p",
-      { style: { marginBottom: "2rem" } },
-      text("Unser Sortiment an Hardware und Zubehör für produktives Arbeiten."),
-    ),
-    h(
-      "div",
-      {},
-      products.map((p) =>
-        ProductCard(p.name, p.price, p.description, p.category),
-      ),
-    ),
-  ]);
+	return div({}, [
+		h1({}, text("Produkte")),
+		p(
+			{ style: { marginBottom: "2rem" } },
+			text("Unser Sortiment an Hardware und Zubehör für produktives Arbeiten."),
+		),
+		div(
+			{},
+			products.map((p) => ProductCard(p.name, p.price, p.description, p.category)),
+		),
+	]);
 };

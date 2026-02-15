@@ -6,6 +6,7 @@ UI language is German.
 ## Stack
 
 - **Hyperapp 2** – 1kB vdom + state management, functional paradigm
+- **@hyperapp/html** – convenient HTML element functions (use instead of manual `h()` calls)
 - **Navigo** – vanilla JS router, lives outside Hyperapp
 - **Ramda** – functional data transformation, especially `assocPath` for immutable state updates
 - **Zod** – runtime validation at the API boundary
@@ -76,6 +77,9 @@ plain functions returning `[effectFn, payload]` tuples. No hidden side effects i
 **Actions are pure functions.** `(state, payload) => newState` or `(state, payload) => [newState, ...effects]`.
 This makes them trivially testable without mocks or setup.
 
+**Views use @hyperapp/html.** Import element functions directly: `import { div, h1, p, text } from "@hyperapp/html"`.
+Never use `h()` directly – always use the named element functions for cleaner, more readable code.
+
 ## Adding a New Route
 
 1. Create `src/routes/yourroute/` with `schemas.ts`, `actions.ts`, `view.ts`
@@ -88,15 +92,15 @@ This makes them trivially testable without mocks or setup.
 
 ## Scroll Restoration
 
-**Automatic save:** Scroll position is saved to `sessionStorage` before every navigation via the Navigo `before` hook in `main.ts`. This happens automatically for all routes.
+**Automatic save:** Scroll position is saved to `sessionStorage` before every navigation via the Navigo `before` hook in `main.ts`. Uses `window.location.pathname` to save the CURRENT page's scroll before navigating away.
 
-**Manual restore:** You must explicitly call the `RestoreScroll` effect for each route that needs it. This is intentional – it gives you control over when scroll happens (e.g., after async data is ready).
+**Manual restore:** You must explicitly call the `RestoreScroll()` effect for each route that needs it. Uses `window.location.pathname` to restore the correct page's scroll – no hard-coded route strings needed!
 
 **When to restore scroll:**
 
 1. **Routes with async data** (like `/users`):
-   - Call `RestoreScroll(path)` in the success action, after data is set
-   - Example: `SetUsersData` returns `[newState, RestoreScroll("users")]`
+   - Call `RestoreScroll()` in the success action, after data is set
+   - Example: `SetUsersData` returns `[newState, RestoreScroll()]`
    - This ensures scroll happens after content is rendered
 
 2. **Routes without async data** (like `/articles`, `/products`):
@@ -105,15 +109,17 @@ This makes them trivially testable without mocks or setup.
      ```typescript
      export const LoadArticles = (state: AppState): [AppState, ReturnType<typeof RestoreScroll>] => [
        { ...state, currentRoute: "articles", loading: false, error: null },
-       RestoreScroll("articles"),
+       RestoreScroll(),
      ];
      ```
    - Register in `main.ts`: `.on("/articles", () => dispatch(LoadArticles))`
 
 3. **Routes that should always start at top** (like `/`):
-   - Don't call `RestoreScroll` – default behavior scrolls to `(0, 0)`
+   - Don't call `RestoreScroll()` – default behavior scrolls to `(0, 0)`
 
-**Multiple async requests:** Use `Promise.all` in `FetchRoute` – call `RestoreScroll` once, after all data is ready.
+**Multiple async requests:** Use `Promise.all` in `FetchRoute` – call `RestoreScroll()` once, after all data is ready.
+
+**Note:** `RestoreScroll()` takes no parameters – it automatically uses `window.location.pathname`.
 
 ## TypeScript Notes
 

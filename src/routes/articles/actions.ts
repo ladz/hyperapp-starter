@@ -5,5 +5,5 @@ export const LoadArticles = (
 	state: AppState,
 ): [AppState, ReturnType<typeof RestoreScroll>] => [
 	{ ...state, currentRoute: "articles", loading: false, error: null },
-	RestoreScroll("articles"),
+	RestoreScroll(),
 ];

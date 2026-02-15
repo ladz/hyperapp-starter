@@ -2,8 +2,8 @@ import type { AppState } from "../../app.js";
 import { RestoreScroll } from "../../core/router.js";
 
 export const LoadProducts = (
-  state: AppState,
+	state: AppState,
 ): [AppState, ReturnType<typeof RestoreScroll>] => [
-  { ...state, currentRoute: "products", loading: false, error: null },
-  RestoreScroll("products"),
+	{ ...state, currentRoute: "products", loading: false, error: null },
+	RestoreScroll(),
 ];

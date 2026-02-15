@@ -12,8 +12,8 @@ const dispatch = app<typeof init>({
 });
 
 router.hooks({
-	before(done, match) {
-		if (match?.url) saveScroll(match.url);
+	before(done) {
+		saveScroll(window.location.pathname);
 		done();
 	},
 });

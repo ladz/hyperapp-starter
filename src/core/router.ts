@@ -37,12 +37,8 @@ export const Navigate = (path: string) => [navigateEffect, { path }] as const;
 
 // --- Hyperapp Effect: Scroll wiederherstellen ---
 
-const restoreScrollEffect = (
-	_dispatch: unknown,
-	{ path }: { path: string },
-): void => {
-	restoreScroll(path);
+const restoreScrollEffect = (_dispatch: unknown, _payload: unknown): void => {
+	restoreScroll(window.location.pathname);
 };
 
-export const RestoreScroll = (path: string) =>
-	[restoreScrollEffect, { path }] as const;
+export const RestoreScroll = () => [restoreScrollEffect, {}] as const;

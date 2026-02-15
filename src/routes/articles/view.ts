@@ -1,4 +1,5 @@
-import { h, text, type VNode } from "hyperapp";
+import { article, div, h1, h2, p, text } from "@hyperapp/html";
+import type { VNode } from "hyperapp";
 import type { AppState } from "../../app.js";
 
 const ArticleCard = (
@@ -6,8 +7,7 @@ const ArticleCard = (
   date: string,
   content: string,
 ): VNode<AppState> =>
-  h(
-    "article",
+  article(
     {
       style: {
         marginBottom: "2rem",
@@ -17,9 +17,9 @@ const ArticleCard = (
       },
     },
     [
-      h("h2", {}, text(title)),
-      h("p", { style: { color: "#666", fontSize: "0.9em" } }, text(date)),
-      h("p", {}, text(content)),
+      h2({}, text(title)),
+      p({ style: { color: "#666", fontSize: "0.9em" } }, text(date)),
+      p({}, text(content)),
     ],
   );
 
@@ -117,15 +117,13 @@ export const ArticlesView = (): VNode<AppState> => {
     },
   ];
 
-  return h("div", {}, [
-    h("h1", {}, text("Artikel")),
-    h(
-      "p",
+  return div({}, [
+    h1({}, text("Artikel")),
+    p(
       { style: { marginBottom: "2rem" } },
       text("Eine Sammlung von Artikeln über moderne Web-Entwicklung."),
     ),
-    h(
-      "div",
+    div(
       {},
       articles.map((a) => ArticleCard(a.title, a.date, a.content)),
     ),

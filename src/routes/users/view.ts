@@ -1,27 +1,27 @@
-import { h, text, type VNode } from "hyperapp";
+import { div, h1, li, p, span, strong, text, ul } from "@hyperapp/html";
+import type { VNode } from "hyperapp";
 import type { AppState } from "../../app.js";
 import type { User } from "./schemas.js";
 
 const UserRow = (user: User): VNode<AppState> =>
-	h("li", { key: String(user.id) }, [
-		h("strong", {}, text(user.name)),
-		text(` — ${user.email} `),
-		h(
-			"span",
-			{ style: { color: "#888", fontSize: "0.85em" } },
-			text(`[${user.role}]`),
-		),
-	]);
+  li({ key: String(user.id) }, [
+    strong({}, text(user.name)),
+    text(` — ${user.email} `),
+    span(
+      { style: { color: "#888", fontSize: "0.85em" } },
+      text(`[${user.role}]`),
+    ),
+  ]);
 
 export const UsersView = (state: AppState): VNode<AppState> => {
-	const users = state.routes.users.list;
+  const users = state.routes.users.list;
 
-	if (state.loading) return h("p", {}, text("Laden…"));
+  if (state.loading) return p({}, text("Laden…"));
 
-	return h("div", {}, [
-		h("h1", {}, text("Users")),
-		users.length === 0
-			? h("p", {}, text("Keine Daten."))
-			: h("ul", {}, users.map(UserRow)),
-	]);
+  return div({}, [
+    h1({}, text("Users")),
+    users.length === 0
+      ? p({}, text("Keine Daten."))
+      : ul({}, users.map(UserRow)),
+  ]);
 };

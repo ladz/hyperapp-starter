@@ -1,4 +1,5 @@
-import { h, text, type VNode } from "hyperapp";
+import type { VNode } from "hyperapp";
+import { a, div, h1, p, text } from "@hyperapp/html";
 import type { AppState } from "../../app.js";
 import { Navigate } from "../../core/router.js";
 
@@ -10,19 +11,17 @@ export const SetHome = (state: AppState): AppState => ({
 });
 
 export const HomeView = (): VNode<AppState> =>
-	h("div", {}, [
-		h("h1", {}, text("Home")),
-		h(
-			"p",
+	div({}, [
+		h1({}, text("Home")),
+		p(
 			{},
 			text(
 				"Willkommen. Das ist ein minimales Hyperapp + Navigo + Ramda + Zod Boilerplate.",
 			),
 		),
-		h("p", {}, [
+		p({}, [
 			text("Geh zu "),
-			h(
-				"a",
+			a(
 				{
 					href: "/users",
 					onclick: (state: AppState, e: MouseEvent) => {
