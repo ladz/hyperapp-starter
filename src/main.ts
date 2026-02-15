@@ -2,6 +2,8 @@ import { app } from "hyperapp";
 import { init, SetRoute, view } from "./app.js";
 import { router, saveScroll } from "./core/router.js";
 import { LoadUsers } from "./routes/users/actions.js";
+import { LoadArticles } from "./routes/articles/actions.js";
+import { LoadProducts } from "./routes/products/actions.js";
 
 const dispatch = app<typeof init>({
 	init,
@@ -19,5 +21,7 @@ router.hooks({
 router
 	.on("/", () => dispatch(SetRoute, "home"))
 	.on("/users", () => dispatch(LoadUsers))
+	.on("/articles", () => dispatch(LoadArticles))
+	.on("/products", () => dispatch(LoadProducts))
 	.notFound(() => dispatch(SetRoute, null))
 	.resolve();

@@ -82,14 +82,38 @@ This makes them trivially testable without mocks or setup.
 2. Add a slice to `AppState` in `src/app.ts`
 3. Add initial state to `init` in `src/app.ts`
 4. Add the view to the root view in `src/app.ts`
-5. Register the route in `src/main.ts`
-6. Add tests in `tests/routes/yourroute/`
+5. Create an action that includes `RestoreScroll` effect (see Scroll Restoration section)
+6. Register the route in `src/main.ts`
+7. Add tests in `tests/routes/yourroute/`
 
 ## Scroll Restoration
 
-Scroll position is saved per route in `sessionStorage` before each navigation (Navigo `before` hook)
-and restored after data is loaded (via `RestoreScroll` effect at the end of `SetUsersData`).
-For routes with multiple async requests, use `Promise.all` – scroll restores once, after all data is ready.
+**Automatic save:** Scroll position is saved to `sessionStorage` before every navigation via the Navigo `before` hook in `main.ts`. This happens automatically for all routes.
+
+**Manual restore:** You must explicitly call the `RestoreScroll` effect for each route that needs it. This is intentional – it gives you control over when scroll happens (e.g., after async data is ready).
+
+**When to restore scroll:**
+
+1. **Routes with async data** (like `/users`):
+   - Call `RestoreScroll(path)` in the success action, after data is set
+   - Example: `SetUsersData` returns `[newState, RestoreScroll("users")]`
+   - This ensures scroll happens after content is rendered
+
+2. **Routes without async data** (like `/articles`, `/products`):
+   - Create a dedicated action that sets the route AND restores scroll
+   - Example:
+     ```typescript
+     export const LoadArticles = (state: AppState): [AppState, ReturnType<typeof RestoreScroll>] => [
+       { ...state, currentRoute: "articles", loading: false, error: null },
+       RestoreScroll("articles"),
+     ];
+     ```
+   - Register in `main.ts`: `.on("/articles", () => dispatch(LoadArticles))`
+
+3. **Routes that should always start at top** (like `/`):
+   - Don't call `RestoreScroll` – default behavior scrolls to `(0, 0)`
+
+**Multiple async requests:** Use `Promise.all` in `FetchRoute` – call `RestoreScroll` once, after all data is ready.
 
 ## TypeScript Notes
 

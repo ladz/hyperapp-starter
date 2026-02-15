@@ -3,6 +3,8 @@ import { Navigate } from "./core/router.js";
 import { HomeView } from "./routes/home/index.js";
 import type { User } from "./routes/users/schemas.js";
 import { UsersView } from "./routes/users/view.js";
+import { ArticlesView } from "./routes/articles/view.js";
+import { ProductsView } from "./routes/products/view.js";
 
 // --- Root State ---
 
@@ -15,6 +17,8 @@ export interface AppState {
 		users: {
 			list: User[];
 		};
+		articles: Record<string, never>;
+		products: Record<string, never>;
 	};
 }
 
@@ -25,6 +29,8 @@ export const init: AppState = {
 	routes: {
 		home: {},
 		users: { list: [] },
+		articles: {},
+		products: {},
 	},
 };
 
@@ -62,6 +68,30 @@ const Nav = (): VNode<AppState> =>
 			},
 			text("Users"),
 		),
+		text(" | "),
+		h(
+			"a",
+			{
+				href: "/articles",
+				onclick: (state: AppState, e: MouseEvent) => {
+					e.preventDefault();
+					return [state, Navigate("/articles")];
+				},
+			},
+			text("Artikel"),
+		),
+		text(" | "),
+		h(
+			"a",
+			{
+				href: "/products",
+				onclick: (state: AppState, e: MouseEvent) => {
+					e.preventDefault();
+					return [state, Navigate("/products")];
+				},
+			},
+			text("Produkte"),
+		),
 	]);
 
 const ErrorView = (message: string): VNode<AppState> =>
@@ -73,6 +103,8 @@ export const view = (state: AppState): VNode<AppState> =>
 		state.error ? ErrorView(state.error) : null,
 		state.currentRoute === "home" ? HomeView() : null,
 		state.currentRoute === "users" ? UsersView(state) : null,
+		state.currentRoute === "articles" ? ArticlesView() : null,
+		state.currentRoute === "products" ? ProductsView() : null,
 		state.currentRoute === null
 			? h("p", {}, text("Route wird aufgelöst…"))
 			: null,
